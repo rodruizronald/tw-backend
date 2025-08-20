@@ -64,7 +64,7 @@ func setupJobRepositories(ctx context.Context, cfg *config.Config) (jobs.DataRep
 
 func run(ctx context.Context) int {
 	// Load configuration
-	cfg, err := config.Load()
+	cfg, err := config.Load(".env")
 	if err != nil {
 		fmt.Printf("failed to load configuration: %v", err)
 		return exitWithError
