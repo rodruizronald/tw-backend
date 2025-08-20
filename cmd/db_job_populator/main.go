@@ -28,15 +28,20 @@ import (
 
 // Job define a type to represent a single job
 type jobData struct {
-	Company         string `json:"company"`
-	Title           string `json:"title"`
-	Description     string `json:"description"`
-	ApplicationURL  string `json:"application_url"`
-	Location        string `json:"location"`
-	WorkMode        string `json:"work_mode"`
-	ExperienceLevel string `json:"experience_level"`
-	EmploymentType  string `json:"employment_type"`
-	Technologies    []struct {
+	Company          string   `json:"company"`
+	Title            string   `json:"title"`
+	Description      string   `json:"description"`
+	Responsibilities []string `json:"responsibilities"`
+	SkillMustHave    []string `json:"skill_must_have"`
+	SkillNiceHave    []string `json:"skill_nice_have"`
+	MainTechnologies []string `json:"main_technologies"`
+	Benefits         []string `json:"benefits"`
+	ApplicationURL   string   `json:"application_url"`
+	Location         string   `json:"location"`
+	WorkMode         string   `json:"work_mode"`
+	ExperienceLevel  string   `json:"experience_level"`
+	EmploymentType   string   `json:"employment_type"`
+	Technologies     []struct {
 		Name     string `json:"name"`
 		Category string `json:"category"`
 		Required bool   `json:"required"`
@@ -105,7 +110,7 @@ func run(ctx context.Context) error {
 // setupDatabase initializes the database connection and repositories
 func setupDatabase(ctx context.Context, log *logrus.Logger) (*pgxpool.Pool, *repositories, error) {
 	// Load configuration
-	cfg, err := config.Load()
+	cfg, err := config.Load("../../.env")
 	if err != nil {
 		log.Errorf("failed to load configuration: %v", err)
 		return nil, nil, err
@@ -202,16 +207,21 @@ func processJob(ctx context.Context, j *jobData, repos *repositories, log *logru
 
 	// Create job model
 	jobModel := &jobs.Job{
-		CompanyID:       companyID,
-		Title:           j.Title,
-		Description:     j.Description,
-		ExperienceLevel: j.ExperienceLevel,
-		EmploymentType:  j.EmploymentType,
-		Location:        j.Location,
-		WorkMode:        j.WorkMode,
-		ApplicationURL:  j.ApplicationURL,
-		IsActive:        true,
-		Signature:       j.Signature,
+		CompanyID:        companyID,
+		Title:            j.Title,
+		Description:      j.Description,
+		Responsibilities: j.Responsibilities,
+		SkillMustHave:    j.SkillMustHave,
+		SkillNiceHave:    j.SkillNiceHave,
+		MainTechnologies: j.MainTechnologies,
+		Benefits:         j.Benefits,
+		ExperienceLevel:  j.ExperienceLevel,
+		EmploymentType:   j.EmploymentType,
+		Location:         j.Location,
+		WorkMode:         j.WorkMode,
+		ApplicationURL:   j.ApplicationURL,
+		IsActive:         true,
+		Signature:        j.Signature,
 	}
 	fmt.Print("Processing job: ", jobModel.Title, " at ", j.Company, "\n")
 
