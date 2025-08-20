@@ -32,8 +32,10 @@ type jobData struct {
 	Title            string   `json:"title"`
 	Description      string   `json:"description"`
 	Responsibilities []string `json:"responsibilities"`
-	SkillMustHave    []string `json:"skill_must_have"`
-	SkillNiceHave    []string `json:"skill_nice_have"`
+	Requirements     struct {
+		MustHave   []string `json:"must_have"`
+		NiceToHave []string `json:"nice_to_have"`
+	} `json:"requirements"`
 	MainTechnologies []string `json:"main_technologies"`
 	Benefits         []string `json:"benefits"`
 	ApplicationURL   string   `json:"application_url"`
@@ -122,7 +124,6 @@ func setupDatabase(ctx context.Context, log *logrus.Logger) (*pgxpool.Pool, *rep
 		log.Errorf("Unable to connect to database: %v", err)
 		return nil, nil, err
 	}
-	defer dbpool.Close()
 
 	// Create repositories
 	repos := &repositories{
@@ -211,8 +212,8 @@ func processJob(ctx context.Context, j *jobData, repos *repositories, log *logru
 		Title:            j.Title,
 		Description:      j.Description,
 		Responsibilities: j.Responsibilities,
-		SkillMustHave:    j.SkillMustHave,
-		SkillNiceHave:    j.SkillNiceHave,
+		SkillMustHave:    j.Requirements.MustHave,
+		SkillNiceHave:    j.Requirements.NiceToHave,
 		MainTechnologies: j.MainTechnologies,
 		Benefits:         j.Benefits,
 		ExperienceLevel:  j.ExperienceLevel,
