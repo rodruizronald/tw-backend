@@ -10,7 +10,6 @@ import (
 type Company struct {
 	ID        int       `json:"id" db:"id"`
 	Name      string    `json:"name" db:"name"`
-	LogoURL   string    `json:"logo_url" db:"logo_url"`
 	IsActive  bool      `json:"is_active" db:"is_active"`
 	CreatedAt time.Time `json:"created_at" db:"created_at"`
 	UpdatedAt time.Time `json:"updated_at" db:"updated_at"`
