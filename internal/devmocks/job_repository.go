@@ -46,7 +46,6 @@ type mockJobData struct {
 	Signature        string   `json:"signature"`
 	DaysAgo          int      `json:"days_ago"`
 	CompanyName      string   `json:"company_name"`
-	CompanyLogoURL   string   `json:"company_logo_url"`
 }
 
 // mockTechnologyData represents the JSON structure for a technology
@@ -249,8 +248,7 @@ func loadMockData() ([]*jobs.JobWithCompany, map[int][]*jobtech.JobTechnologyWit
 				CreatedAt:        now.AddDate(0, 0, -jobData.DaysAgo),
 				UpdatedAt:        now.AddDate(0, 0, -1),
 			},
-			CompanyName:    jobData.CompanyName,
-			CompanyLogoURL: jobData.CompanyLogoURL,
+			CompanyName: jobData.CompanyName,
 		}
 		jobsWithCompany = append(jobsWithCompany, job)
 	}
