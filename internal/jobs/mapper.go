@@ -14,7 +14,6 @@ func MapJobToResponse(job *JobWithCompany, technologies []TechnologyResponse) *J
 		ID:               job.ID,
 		CompanyID:        job.CompanyID,
 		CompanyName:      job.CompanyName,
-		CompanyLogoURL:   job.CompanyLogoURL,
 		Title:            job.Title,
 		Description:      job.Description,
 		Responsibilities: job.Responsibilities,
