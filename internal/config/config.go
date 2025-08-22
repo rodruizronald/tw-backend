@@ -42,11 +42,11 @@ type DatabaseConfig struct {
 
 // Load reads application configuration from environment variables
 // and returns a populated Config struct.
-func Load() (*Config, error) {
+func Load(filename string) (*Config, error) {
 	var cfg Config
 
 	// Load environment variables from .env file
-	if err := godotenv.Load(".env"); err != nil {
+	if err := godotenv.Load(filename); err != nil {
 		return nil, err
 	}
 

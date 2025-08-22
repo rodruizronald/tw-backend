@@ -14,28 +14,28 @@ import (
 // SQL query constants
 const (
 	createCompanyQuery = `
-        INSERT INTO companies (name, logo_url, is_active)
-        VALUES ($1, $2, $3)
+        INSERT INTO companies (name, is_active)
+        VALUES ($1, $2)
         RETURNING id
     `
 
 	getCompanyByNameQuery = `
-        SELECT id, name, logo_url, is_active, created_at, updated_at
+        SELECT id, name, is_active, created_at, updated_at
         FROM companies
         WHERE name = $1
     `
 
 	updateCompanyQuery = `
         UPDATE companies
-        SET name = $1, logo_url = $2, is_active = $3, updated_at = NOW()
-        WHERE id = $4
+        SET name = $1, is_active = $2, updated_at = NOW()
+        WHERE id = $3
         RETURNING updated_at
     `
 
 	deleteCompanyQuery = `DELETE FROM companies WHERE id = $1`
 
 	listCompaniesQuery = `
-        SELECT id, name, logo_url, is_active, created_at, updated_at
+        SELECT id, name, is_active, created_at, updated_at
         FROM companies
         ORDER BY name
     `
@@ -72,7 +72,6 @@ func (r *Repository) Create(ctx context.Context, company *Company) error {
 		ctx,
 		createCompanyQuery,
 		company.Name,
-		company.LogoURL,
 		company.IsActive,
 	).Scan(&company.ID)
 
@@ -94,7 +93,6 @@ func (r *Repository) GetByName(ctx context.Context, name string) (*Company, erro
 	err := r.db.QueryRow(ctx, getCompanyByNameQuery, name).Scan(
 		&company.ID,
 		&company.Name,
-		&company.LogoURL,
 		&company.IsActive,
 		&company.CreatedAt,
 		&company.UpdatedAt,
@@ -116,7 +114,6 @@ func (r *Repository) Update(ctx context.Context, company *Company) error {
 		ctx,
 		updateCompanyQuery,
 		company.Name,
-		company.LogoURL,
 		company.IsActive,
 		company.ID,
 	).Scan(&company.UpdatedAt)
@@ -166,7 +163,6 @@ func (r *Repository) List(ctx context.Context) ([]*Company, error) {
 		err = rows.Scan(
 			&company.ID,
 			&company.Name,
-			&company.LogoURL,
 			&company.IsActive,
 			&company.CreatedAt,
 			&company.UpdatedAt,

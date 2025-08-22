@@ -20,8 +20,7 @@ import (
 // Company represents a company entity as stored in the JSON configuration file.
 // It contains the basic information needed to create a company record in the database.
 type Company struct {
-	Name    string `json:"name"`
-	LogoURL string `json:"logo_url"`
+	Name string `json:"name"`
 }
 
 func main() {
@@ -52,7 +51,7 @@ func run(ctx context.Context) error {
 	log.Infof("Loaded %d companies from JSON file", len(companies))
 
 	// Load configuration
-	cfg, err := config.Load()
+	cfg, err := config.Load("../../.env")
 	if err != nil {
 		log.Errorf("failed to load configuration: %v", err)
 		return err
@@ -73,7 +72,6 @@ func run(ctx context.Context) error {
 	for _, c := range companies {
 		cm := &company.Company{
 			Name:     c.Name,
-			LogoURL:  c.LogoURL,
 			IsActive: true,
 		}
 

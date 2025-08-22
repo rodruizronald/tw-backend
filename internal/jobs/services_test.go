@@ -51,8 +51,7 @@ func TestJobSearchService_ExecuteSearch(t *testing.T) {
 							CreatedAt:       now,
 							UpdatedAt:       now,
 						},
-						CompanyName:    "Tech Corp",
-						CompanyLogoURL: "https://example.com/logo1.png",
+						CompanyName: "Tech Corp",
 					},
 					{
 						Job: Job{
@@ -70,8 +69,7 @@ func TestJobSearchService_ExecuteSearch(t *testing.T) {
 							CreatedAt:       now,
 							UpdatedAt:       now,
 						},
-						CompanyName:    "Innovation Inc",
-						CompanyLogoURL: "https://example.com/logo2.png",
+						CompanyName: "Innovation Inc",
 					},
 				}
 				technologiesMap := map[int][]*jobtech.JobTechnologyWithDetails{
@@ -180,8 +178,7 @@ func TestJobSearchService_ExecuteSearch(t *testing.T) {
 							CreatedAt:       now,
 							UpdatedAt:       now,
 						},
-						CompanyName:    "Simple Corp",
-						CompanyLogoURL: "https://example.com/logo3.png",
+						CompanyName: "Simple Corp",
 					},
 				}
 
@@ -234,8 +231,7 @@ func TestJobSearchService_ExecuteSearch(t *testing.T) {
 							CreatedAt:       now,
 							UpdatedAt:       now,
 						},
-						CompanyName:    "TechCorp",
-						CompanyLogoURL: "https://example.com/logo4.png",
+						CompanyName: "TechCorp",
 					},
 				}
 				technologiesMap := map[int][]*jobtech.JobTechnologyWithDetails{
@@ -323,8 +319,7 @@ func TestJobSearchService_ExecuteSearch(t *testing.T) {
 							CreatedAt:       now,
 							UpdatedAt:       now,
 						},
-						CompanyName:    "Test Corp",
-						CompanyLogoURL: "https://example.com/logo5.png",
+						CompanyName: "Test Corp",
 					},
 				}
 
@@ -400,8 +395,7 @@ func TestJobSearchService_ExecuteSearch(t *testing.T) {
 							CreatedAt:       now,
 							UpdatedAt:       now,
 						},
-						CompanyName:    "Test Corp",
-						CompanyLogoURL: "https://example.com/logo.png",
+						CompanyName: "Test Corp",
 					}
 					jobIDs[i] = jobID
 					technologiesMap[jobID] = []*jobtech.JobTechnologyWithDetails{}
@@ -468,8 +462,7 @@ func TestJobSearchService_ExecuteSearch(t *testing.T) {
 							CreatedAt:       now,
 							UpdatedAt:       now,
 						},
-						CompanyName:    "Full Stack Corp",
-						CompanyLogoURL: "https://example.com/logo6.png",
+						CompanyName: "Full Stack Corp",
 					},
 				}
 
