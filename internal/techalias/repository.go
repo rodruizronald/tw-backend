@@ -26,7 +26,7 @@ const (
 	getTechnologyAliasByAliasQuery = `
         SELECT id, technology_id, alias, created_at
         FROM technology_aliases
-        WHERE alias = $1
+        WHERE LOWER(alias) = LOWER($1)
     `
 
 	updateTechnologyAliasQuery = `
