@@ -10,7 +10,6 @@ import (
 	"os"
 	"os/signal"
 	"path/filepath"
-	"strings"
 	"syscall"
 	"time"
 
@@ -270,18 +269,16 @@ func processTechnologies(ctx context.Context, j *jobData, jobModel *jobs.Job, re
 	var missingTechs []string
 
 	for _, tech := range j.Technologies {
-		techName := strings.ToLower(tech.Name)
-
 		// Find technology by name or alias
-		techModel, err := findTechnology(ctx, techName, repos, log)
+		techModel, err := findTechnology(ctx, tech.Name, repos, log)
 		if err != nil {
-			missingTechs = append(missingTechs, techName)
+			missingTechs = append(missingTechs, tech.Name)
 			continue
 		}
 
 		// Create job technology association
 		if err := createJobTechnology(ctx, jobModel.ID, techModel.ID,
-			tech.Required, techName, repos.jobtech, log); err != nil {
+			tech.Required, tech.Name, repos.jobtech, log); err != nil {
 			continue
 		}
 	}
