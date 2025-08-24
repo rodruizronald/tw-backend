@@ -58,7 +58,7 @@ const (
             j.id, j.company_id, j.title, j.description, j.responsibilities, j.skill_must_have,
             j.skill_nice_have, j.main_technologies, j.benefits, j.experience_level, j.employment_type,
             j.location, j.work_mode, j.application_url, j.is_active, j.signature, j.created_at, j.updated_at,
-            c.name as company_name
+            c.name as company_name,
             COUNT(*) OVER() as total_count
         FROM jobs j
         JOIN companies c ON j.company_id = c.id, search_query sq

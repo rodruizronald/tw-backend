@@ -29,7 +29,7 @@ const (
 	getTechnologyByNameQuery = `
         SELECT id, name, category, parent_id, created_at
         FROM technologies
-        WHERE name = $1
+        WHERE LOWER(name) = LOWER($1)
     `
 
 	updateTechnologyQuery = `

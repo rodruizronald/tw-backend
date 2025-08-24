@@ -8,7 +8,6 @@ import (
 	"os"
 	"os/signal"
 	"path/filepath"
-	"strings"
 	"syscall"
 
 	"github.com/sirupsen/logrus"
@@ -97,12 +96,9 @@ func createTechnologies(ctx context.Context, log *logrus.Logger, techRepo *techn
 	aliasRepo *techalias.Repository, technologies []Technology, techMap map[string]*technology.Technology) {
 
 	for _, tech := range technologies {
-		// Convert name to lowercase
-		techName := strings.ToLower(tech.Name)
-
 		// Create the technology model
 		newTech := &technology.Technology{
-			Name:     techName,
+			Name:     tech.Name,
 			Category: tech.Category,
 			// Parent ID will be set in the second pass
 		}
@@ -114,26 +110,26 @@ func createTechnologies(ctx context.Context, log *logrus.Logger, techRepo *techn
 		if err != nil {
 			// Skip if it's a duplicate
 			if technology.IsDuplicate(err) {
-				log.Infof("Technology already exists: %s", techName)
+				log.Infof("Technology already exists: %s", tech.Name)
 
 				// Fetch the existing technology to use for parent mapping
-				existingTech, err = techRepo.GetByName(ctx, techName)
+				existingTech, err = techRepo.GetByName(ctx, tech.Name)
 				if err != nil {
-					log.Warnf("Error fetching existing technology %s: %v", techName, err)
+					log.Warnf("Error fetching existing technology %s: %v", tech.Name, err)
 					continue
 				}
-				techMap[techName] = existingTech
+				techMap[tech.Name] = existingTech
 
 				// Add aliases for existing technology
 				addAliases(ctx, log, aliasRepo, existingTech.ID, tech.Alias)
 				continue
 			}
-			log.Warnf("Error creating technology %s: %v", techName, err)
+			log.Warnf("Error creating technology %s: %v", tech.Name, err)
 			continue
 		}
 
-		log.Infof("Created technology: %s (ID: %d)", techName, newTech.ID)
-		techMap[techName] = newTech
+		log.Infof("Created technology: %s (ID: %d)", tech.Name, newTech.ID)
+		techMap[tech.Name] = newTech
 
 		// Add aliases for new technology
 		addAliases(ctx, log, aliasRepo, newTech.ID, tech.Alias)
@@ -148,20 +144,18 @@ func updateTechnologyParents(ctx context.Context, log *logrus.Logger, techRepo *
 		if tech.Parent == "" {
 			continue // Skip technologies without parents
 		}
-		techName := strings.ToLower(tech.Name)
-		parentName := strings.ToLower(tech.Parent)
 
 		// Look up the current technology
-		currentTech, exists := techMap[techName]
+		currentTech, exists := techMap[tech.Name]
 		if !exists {
-			log.Warnf("Cannot find technology: %s", techName)
+			log.Warnf("Cannot find technology: %s", tech.Name)
 			continue
 		}
 
 		// Look up the parent technology
-		parentTech, exists := techMap[parentName]
+		parentTech, exists := techMap[tech.Parent]
 		if !exists {
-			log.Warnf("Cannot find parent technology: %s for %s", parentName, techName)
+			log.Warnf("Cannot find parent technology: %s for %s", tech.Parent, tech.Name)
 			continue
 		}
 
@@ -186,13 +180,10 @@ func addAliases(ctx context.Context, log *logrus.Logger, aliasRepo *techalias.Re
 			continue
 		}
 
-		// Convert alias to lowercase
-		lowerAlias := strings.ToLower(aliasName)
-
 		// Create alias model
 		newAlias := &techalias.TechnologyAlias{
 			TechnologyID: techID,
-			Alias:        lowerAlias,
+			Alias:        aliasName,
 		}
 
 		// Insert into database
@@ -200,14 +191,14 @@ func addAliases(ctx context.Context, log *logrus.Logger, aliasRepo *techalias.Re
 		if err != nil {
 			// Skip if it's a duplicate
 			if techalias.IsDuplicate(err) {
-				log.Infof("Alias already exists: %s", lowerAlias)
+				log.Infof("Alias already exists: %s", aliasName)
 				continue
 			}
-			log.Warnf("Error creating alias %s for technology ID %d: %v", lowerAlias, techID, err)
+			log.Warnf("Error creating alias %s for technology ID %d: %v", aliasName, techID, err)
 			continue
 		}
 
-		log.Infof("Created alias: %s (ID: %d) for technology ID %d", lowerAlias, newAlias.ID, techID)
+		log.Infof("Created alias: %s (ID: %d) for technology ID %d", aliasName, newAlias.ID, techID)
 	}
 }
 

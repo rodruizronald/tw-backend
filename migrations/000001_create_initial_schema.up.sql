@@ -36,9 +36,8 @@ RETURNS trigger AS $$
 BEGIN
     NEW.search_vector := 
         setweight(to_tsvector('english', coalesce(NEW.title, '')), 'A') ||
-        setweight(to_tsvector('english', coalesce(NEW.description, '')), 'B') ||
-        setweight(to_tsvector('english', coalesce(array_to_string(NEW.skill_must_have, ' '), '')), 'C') ||
-        setweight(to_tsvector('english', coalesce(array_to_string(NEW.skill_nice_have, ' '), '')), 'D');
+        setweight(to_tsvector('english', coalesce(array_to_string(NEW.skill_must_have, ' '), '')), 'B') ||
+        setweight(to_tsvector('english', coalesce(array_to_string(NEW.skill_nice_have, ' '), '')), 'C');
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
@@ -96,13 +95,13 @@ CREATE INDEX idx_jobs_employment_type ON jobs(employment_type);
 CREATE INDEX idx_jobs_experience_level ON jobs(experience_level);
 
 -- Technologies Indexes
-CREATE UNIQUE INDEX idx_technologies_name ON technologies(name);
+CREATE UNIQUE INDEX idx_technologies_name_lower ON technologies(LOWER(name));
 CREATE INDEX idx_technologies_category ON technologies(category);
 CREATE INDEX idx_technologies_parent_id ON technologies(parent_id);
 
 -- Technology Aliases Indexes
 CREATE INDEX idx_technology_aliases_technology_id ON technology_aliases(technology_id);
-CREATE INDEX idx_technology_aliases_alias ON technology_aliases(alias);
+CREATE INDEX idx_technology_aliases_alias_lower ON technology_aliases(LOWER(alias));
 
 -- Job Technologies Indexes
 CREATE INDEX idx_job_technologies_job_id ON job_technologies(job_id);

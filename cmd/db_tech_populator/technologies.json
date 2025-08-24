@@ -770,7 +770,12 @@
   {
     "name": "Cloudflare",
     "category": "cloud",
-    "alias": ["CF", "Cloudflare Services", "Cloudflare Network", "Cloudflare Workers"],
+    "alias": [
+      "CF",
+      "Cloudflare Services",
+      "Cloudflare Network",
+      "Cloudflare Workers"
+    ],
     "parent": ""
   },
   {
@@ -842,7 +847,11 @@
   {
     "name": "Ansible",
     "category": "devops",
-    "alias": ["Ansible Automation", "Ansible Playbook", "Configuration Management"],
+    "alias": [
+      "Ansible Automation",
+      "Ansible Playbook",
+      "Configuration Management"
+    ],
     "parent": ""
   },
   {
@@ -890,13 +899,22 @@
   {
     "name": "Grafana",
     "category": "devops",
-    "alias": ["Grafana Dashboard", "Grafana Monitoring", "Grafana Observability"],
+    "alias": [
+      "Grafana Dashboard",
+      "Grafana Monitoring",
+      "Grafana Observability"
+    ],
     "parent": ""
   },
   {
     "name": "Datadog",
     "category": "devops",
-    "alias": ["DD", "Datadog Monitoring", "Datadog APM", "Datadog Observability"],
+    "alias": [
+      "DD",
+      "Datadog Monitoring",
+      "Datadog APM",
+      "Datadog Observability"
+    ],
     "parent": ""
   },
   {
@@ -1010,7 +1028,11 @@
   {
     "name": "Elastic Stack",
     "category": "observability",
-    "alias": ["ELK Stack", "Elasticsearch Logstash Kibana", "Elastic Observability"],
+    "alias": [
+      "ELK Stack",
+      "Elasticsearch Logstash Kibana",
+      "Elastic Observability"
+    ],
     "parent": ""
   },
   {
@@ -1076,13 +1098,21 @@
   {
     "name": "Honeycomb",
     "category": "observability",
-    "alias": ["Honeycomb.io", "Observability Platform", "Honeycomb Observability"],
+    "alias": [
+      "Honeycomb.io",
+      "Observability Platform",
+      "Honeycomb Observability"
+    ],
     "parent": ""
   },
   {
     "name": "Lightstep",
     "category": "observability",
-    "alias": ["Lightstep Observability", "ServiceNow Lightstep", "Distributed Tracing"],
+    "alias": [
+      "Lightstep Observability",
+      "ServiceNow Lightstep",
+      "Distributed Tracing"
+    ],
     "parent": ""
   },
   {
@@ -1118,7 +1148,11 @@
   {
     "name": "Zabbix",
     "category": "observability",
-    "alias": ["Zabbix Monitoring", "Zabbix Enterprise", "Infrastructure Monitoring"],
+    "alias": [
+      "Zabbix Monitoring",
+      "Zabbix Enterprise",
+      "Infrastructure Monitoring"
+    ],
     "parent": ""
   },
   {
@@ -1154,7 +1188,12 @@
   {
     "name": "Jest",
     "category": "testing",
-    "alias": ["Jest.js", "Facebook Jest", "JavaScript Testing", "React Testing"],
+    "alias": [
+      "Jest.js",
+      "Facebook Jest",
+      "JavaScript Testing",
+      "React Testing"
+    ],
     "parent": "JavaScript"
   },
   {
@@ -1262,7 +1301,11 @@
   {
     "name": "Testing Library",
     "category": "testing",
-    "alias": ["React Testing Library", "DOM Testing Library", "User-centric Testing"],
+    "alias": [
+      "React Testing Library",
+      "DOM Testing Library",
+      "User-centric Testing"
+    ],
     "parent": "JavaScript"
   },
   {
@@ -1316,7 +1359,11 @@
   {
     "name": "Locust",
     "category": "testing",
-    "alias": ["Python Load Testing", "Performance Testing", "Distributed Testing"],
+    "alias": [
+      "Python Load Testing",
+      "Performance Testing",
+      "Distributed Testing"
+    ],
     "parent": "Python"
   },
   {
@@ -1460,7 +1507,11 @@
   {
     "name": "WSL",
     "category": "os",
-    "alias": ["Windows Subsystem for Linux", "Linux on Windows", "Microsoft WSL"],
+    "alias": [
+      "Windows Subsystem for Linux",
+      "Linux on Windows",
+      "Microsoft WSL"
+    ],
     "parent": "Windows"
   },
   {
@@ -1532,7 +1583,11 @@
   {
     "name": "SciPy",
     "category": "ai",
-    "alias": ["Scientific Python", "Scientific Computing", "Technical Computing"],
+    "alias": [
+      "Scientific Python",
+      "Scientific Computing",
+      "Technical Computing"
+    ],
     "parent": "Python"
   },
   {
@@ -1544,7 +1599,11 @@
   {
     "name": "Seaborn",
     "category": "ai",
-    "alias": ["Statistical Visualization", "Data Visualization", "Python Visualization"],
+    "alias": [
+      "Statistical Visualization",
+      "Data Visualization",
+      "Python Visualization"
+    ],
     "parent": "Matplotlib"
   },
   {
@@ -1562,7 +1621,11 @@
   {
     "name": "LightGBM",
     "category": "ai",
-    "alias": ["Light Gradient Boosting Machine", "Microsoft LightGBM", "Gradient Boosting"],
+    "alias": [
+      "Light Gradient Boosting Machine",
+      "Microsoft LightGBM",
+      "Gradient Boosting"
+    ],
     "parent": "Python"
   },
   {
@@ -1604,7 +1667,11 @@
   {
     "name": "ONNX",
     "category": "ai",
-    "alias": ["Open Neural Network Exchange", "ML Interoperability", "Model Exchange"],
+    "alias": [
+      "Open Neural Network Exchange",
+      "ML Interoperability",
+      "Model Exchange"
+    ],
     "parent": ""
   },
   {
@@ -1898,7 +1965,11 @@
   {
     "name": "SciPy",
     "category": "data_science",
-    "alias": ["Scientific Python", "Scientific Computing", "Technical Computing"],
+    "alias": [
+      "Scientific Python",
+      "Scientific Computing",
+      "Technical Computing"
+    ],
     "parent": "Python"
   },
   {
@@ -1910,7 +1981,11 @@
   {
     "name": "Seaborn",
     "category": "data_science",
-    "alias": ["Statistical Visualization", "Data Visualization", "Python Visualization"],
+    "alias": [
+      "Statistical Visualization",
+      "Data Visualization",
+      "Python Visualization"
+    ],
     "parent": "Matplotlib"
   },
   {
@@ -1970,7 +2045,11 @@
   {
     "name": "Power BI",
     "category": "data_science",
-    "alias": ["Microsoft Power BI", "Business Intelligence", "Data Visualization"],
+    "alias": [
+      "Microsoft Power BI",
+      "Business Intelligence",
+      "Data Visualization"
+    ],
     "parent": "Microsoft 365"
   },
   {
@@ -2108,7 +2187,12 @@
   {
     "name": "Kafka",
     "category": "messaging",
-    "alias": ["Apache Kafka", "Kafka Streams", "Kafka Connect", "Event Streaming Platform"],
+    "alias": [
+      "Apache Kafka",
+      "Kafka Streams",
+      "Kafka Connect",
+      "Event Streaming Platform"
+    ],
     "parent": ""
   },
   {
@@ -2150,25 +2234,45 @@
   {
     "name": "AWS SQS",
     "category": "messaging",
-    "alias": ["Simple Queue Service", "Amazon SQS", "SQS", "AWS Simple Queue Service"],
+    "alias": [
+      "Simple Queue Service",
+      "Amazon SQS",
+      "SQS",
+      "AWS Simple Queue Service"
+    ],
     "parent": "Amazon Web Services"
   },
   {
     "name": "AWS SNS",
     "category": "messaging",
-    "alias": ["Simple Notification Service", "Amazon SNS", "SNS", "AWS Simple Notification Service"],
+    "alias": [
+      "Simple Notification Service",
+      "Amazon SNS",
+      "SNS",
+      "AWS Simple Notification Service"
+    ],
     "parent": "Amazon Web Services"
   },
   {
     "name": "Google Pub/Sub",
     "category": "messaging",
-    "alias": ["Google PubSub", "GCP Pub/Sub", "Cloud Pub/Sub", "Google Cloud Pub/Sub"],
+    "alias": [
+      "Google PubSub",
+      "GCP Pub/Sub",
+      "Cloud Pub/Sub",
+      "Google Cloud Pub/Sub"
+    ],
     "parent": "Google Cloud Platform"
   },
   {
     "name": "Azure Service Bus",
     "category": "messaging",
-    "alias": ["ASB", "Microsoft Service Bus", "Azure Messaging", "Azure Message Bus"],
+    "alias": [
+      "ASB",
+      "Microsoft Service Bus",
+      "Azure Messaging",
+      "Azure Message Bus"
+    ],
     "parent": "Microsoft Azure"
   },
   {
@@ -2186,31 +2290,56 @@
   {
     "name": "MQTT",
     "category": "messaging",
-    "alias": ["Message Queuing Telemetry Transport", "MQ Telemetry Transport", "MQTT Protocol", "IoT Messaging Protocol"],
+    "alias": [
+      "Message Queuing Telemetry Transport",
+      "MQ Telemetry Transport",
+      "MQTT Protocol",
+      "IoT Messaging Protocol"
+    ],
     "parent": ""
   },
   {
     "name": "AMQP",
     "category": "messaging",
-    "alias": ["Advanced Message Queuing Protocol", "AMQP Protocol", "AMQP 0-9-1", "AMQP 1.0"],
+    "alias": [
+      "Advanced Message Queuing Protocol",
+      "AMQP Protocol",
+      "AMQP 0-9-1",
+      "AMQP 1.0"
+    ],
     "parent": ""
   },
   {
     "name": "Apache Camel",
     "category": "messaging",
-    "alias": ["Camel", "Camel Integration", "Apache Integration Framework", "Camel Routes"],
+    "alias": [
+      "Camel",
+      "Camel Integration",
+      "Apache Integration Framework",
+      "Camel Routes"
+    ],
     "parent": ""
   },
   {
     "name": "Apache NiFi",
     "category": "messaging",
-    "alias": ["NiFi", "Dataflow System", "NiFi Registry", "Hortonworks DataFlow"],
+    "alias": [
+      "NiFi",
+      "Dataflow System",
+      "NiFi Registry",
+      "Hortonworks DataFlow"
+    ],
     "parent": ""
   },
   {
     "name": "Celery",
     "category": "messaging",
-    "alias": ["Celery Task Queue", "Python Celery", "Celery Distributed Tasks", "Celery Workers"],
+    "alias": [
+      "Celery Task Queue",
+      "Python Celery",
+      "Celery Distributed Tasks",
+      "Celery Workers"
+    ],
     "parent": "Python"
   },
   {
@@ -2234,7 +2363,11 @@
   {
     "name": "Solidity",
     "category": "other",
-    "alias": ["Smart Contract Language", "Ethereum Language", "Blockchain Programming"],
+    "alias": [
+      "Smart Contract Language",
+      "Ethereum Language",
+      "Blockchain Programming"
+    ],
     "parent": "Ethereum"
   },
   {
@@ -2252,7 +2385,11 @@
   {
     "name": "WebRTC",
     "category": "other",
-    "alias": ["Web Real-Time Communication", "P2P Communication", "Browser Communication"],
+    "alias": [
+      "Web Real-Time Communication",
+      "P2P Communication",
+      "Browser Communication"
+    ],
     "parent": ""
   },
   {
@@ -2276,13 +2413,21 @@
   {
     "name": "MQTT",
     "category": "other",
-    "alias": ["Message Queuing Telemetry Transport", "IoT Protocol", "Pub/Sub Protocol"],
+    "alias": [
+      "Message Queuing Telemetry Transport",
+      "IoT Protocol",
+      "Pub/Sub Protocol"
+    ],
     "parent": "IoT"
   },
   {
     "name": "Embedded Systems",
     "category": "other",
-    "alias": ["Embedded Programming", "Firmware", "Microcontroller Programming"],
+    "alias": [
+      "Embedded Programming",
+      "Firmware",
+      "Microcontroller Programming"
+    ],
     "parent": ""
   },
   {
@@ -2300,7 +2445,11 @@
   {
     "name": "FPGA",
     "category": "other",
-    "alias": ["Field-Programmable Gate Array", "Hardware Programming", "Digital Circuits"],
+    "alias": [
+      "Field-Programmable Gate Array",
+      "Hardware Programming",
+      "Digital Circuits"
+    ],
     "parent": ""
   },
   {
@@ -2342,7 +2491,12 @@
   {
     "name": "Cybersecurity",
     "category": "other",
-    "alias": ["InfoSec", "Security", "Network Security", "Application Security"],
+    "alias": [
+      "InfoSec",
+      "Security",
+      "Network Security",
+      "Application Security"
+    ],
     "parent": ""
   },
   {
@@ -2384,7 +2538,11 @@
   {
     "name": "ROS",
     "category": "other",
-    "alias": ["Robot Operating System", "Robotics Framework", "Robot Programming"],
+    "alias": [
+      "Robot Operating System",
+      "Robotics Framework",
+      "Robot Programming"
+    ],
     "parent": "Robotics"
   },
   {
@@ -2434,5 +2592,215 @@
     "category": "other",
     "alias": ["i18n", "Localization", "l10n", "Multilingual Support"],
     "parent": ""
+  },
+  {
+    "name": "Scrum",
+    "category": "productivity",
+    "alias": ["Scrum Framework", "Scrum Methodology"],
+    "parent": ""
+  },
+  {
+    "name": "Kanban",
+    "category": "productivity",
+    "alias": ["Kanban Board", "Kanban Method"],
+    "parent": ""
+  },
+  {
+    "name": "REST",
+    "category": "backend",
+    "alias": ["RESTful", "REST API", "Representational State Transfer"],
+    "parent": ""
+  },
+  {
+    "name": "gRPC",
+    "category": "backend",
+    "alias": ["Google RPC", "gRPC Framework"],
+    "parent": ""
+  },
+  {
+    "name": "GraphQL",
+    "category": "backend",
+    "alias": ["Graph Query Language", "GQL"],
+    "parent": ""
+  },
+  {
+    "name": "CI/CD",
+    "category": "devops",
+    "alias": ["Continuous Integration", "Continuous Deployment", "CI CD"],
+    "parent": ""
+  },
+  {
+    "name": "OWASP",
+    "category": "other",
+    "alias": ["Open Web Application Security Project"],
+    "parent": ""
+  },
+  {
+    "name": "OAuth",
+    "category": "other",
+    "alias": ["OAuth 2.0", "Open Authorization"],
+    "parent": ""
+  },
+  {
+    "name": "Azure Cosmos DB",
+    "category": "databases",
+    "alias": ["Cosmos DB", "CosmosDB"],
+    "parent": "Microsoft Azure"
+  },
+  {
+    "name": "Azure Active Directory",
+    "category": "cloud",
+    "alias": ["AAD", "Azure AD", "Microsoft Entra ID"],
+    "parent": "Microsoft Azure"
+  },
+  {
+    "name": "Amazon Cognito",
+    "category": "cloud",
+    "alias": ["AWS Cognito", "Cognito"],
+    "parent": "Amazon Web Services"
+  },
+  {
+    "name": "AWS IAM",
+    "category": "cloud",
+    "alias": ["IAM", "Identity and Access Management"],
+    "parent": "Amazon Web Services"
+  },
+  {
+    "name": "Google Identity Platform",
+    "category": "cloud",
+    "alias": ["GIP", "Firebase Auth"],
+    "parent": "Google Cloud Platform"
+  },
+  {
+    "name": "Agile",
+    "category": "productivity",
+    "alias": ["Agile Methodology", "Agile Development"],
+    "parent": ""
+  },
+  {
+    "name": "LlamaIndex",
+    "category": "ai",
+    "alias": ["Llama Index", "GPT Index"],
+    "parent": ""
+  },
+  {
+    "name": "Pinecone",
+    "category": "ai",
+    "alias": ["Pinecone DB", "Pinecone Vector DB"],
+    "parent": ""
+  },
+  {
+    "name": "Milvus",
+    "category": "ai",
+    "alias": ["Milvus DB", "Milvus Vector Database"],
+    "parent": ""
+  },
+  {
+    "name": "Chroma",
+    "category": "ai",
+    "alias": ["ChromaDB", "Chroma Vector DB"],
+    "parent": ""
+  },
+  {
+    "name": "Mistral",
+    "category": "ai",
+    "alias": ["Mistral AI", "Mistral LLM"],
+    "parent": ""
+  },
+  {
+    "name": "Llama",
+    "category": "ai",
+    "alias": ["LLaMA", "Meta Llama", "Llama 2"],
+    "parent": ""
+  },
+  {
+    "name": "Amazon Bedrock",
+    "category": "ai",
+    "alias": ["AWS Bedrock", "Bedrock"],
+    "parent": "Amazon Web Services"
+  },
+  {
+    "name": "Amazon Kendra",
+    "category": "ai",
+    "alias": ["AWS Kendra", "Kendra"],
+    "parent": "Amazon Web Services"
+  },
+  {
+    "name": "Amazon Rekognition",
+    "category": "ai",
+    "alias": ["AWS Rekognition", "Rekognition"],
+    "parent": "Amazon Web Services"
+  },
+  {
+    "name": "Amazon Transcribe",
+    "category": "ai",
+    "alias": ["AWS Transcribe", "Transcribe"],
+    "parent": "Amazon Web Services"
+  },
+  {
+    "name": "Amazon Translate",
+    "category": "ai",
+    "alias": ["AWS Translate", "Translate"],
+    "parent": "Amazon Web Services"
+  },
+  {
+    "name": "Codex",
+    "category": "ai",
+    "alias": ["OpenAI Codex", "GitHub Codex"],
+    "parent": "OpenAI"
+  },
+  {
+    "name": "Google Gemini",
+    "category": "ai",
+    "alias": ["Gemini", "Bard", "Gemini Pro"],
+    "parent": "Google Cloud Platform"
+  },
+  {
+    "name": "OpenRouter",
+    "category": "ai",
+    "alias": ["OpenRouter API"],
+    "parent": ""
+  },
+  {
+    "name": "GitHub Copilot",
+    "category": "productivity",
+    "alias": ["Copilot", "GH Copilot"],
+    "parent": "GitHub"
+  },
+  {
+    "name": "Tabnine",
+    "category": "productivity",
+    "alias": ["TabNine", "Tabnine AI"],
+    "parent": ""
+  },
+  {
+    "name": "Amazon CodeWhisperer",
+    "category": "productivity",
+    "alias": ["CodeWhisperer", "AWS CodeWhisperer"],
+    "parent": "Amazon Web Services"
+  },
+  {
+    "name": "Cursor",
+    "category": "productivity",
+    "alias": ["Cursor AI", "Cursor Editor"],
+    "parent": ""
+  },
+  {
+    "name": "MLOps",
+    "category": "ai",
+    "alias": ["Machine Learning Operations", "ML Ops"],
+    "parent": ""
+  },
+  {
+    "name": "SwiftUI",
+    "category": "frontend",
+    "alias": ["Swift UI"],
+    "parent": "Swift"
+  },
+  {
+    "name": "XCTest",
+    "category": "testing",
+    "alias": ["XC Test", "Xcode Test"],
+    "parent": "Swift"
   }
 ]

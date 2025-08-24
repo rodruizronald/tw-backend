@@ -2,12 +2,12 @@
 DROP INDEX IF EXISTS idx_job_technologies_technology_id;
 DROP INDEX IF EXISTS idx_job_technologies_job_id;
 
-DROP INDEX IF EXISTS idx_technology_aliases_alias;
+DROP INDEX IF EXISTS idx_technology_aliases_alias_lower;
 DROP INDEX IF EXISTS idx_technology_aliases_technology_id;
 
 DROP INDEX IF EXISTS idx_technologies_parent_id;
 DROP INDEX IF EXISTS idx_technologies_category;
-DROP INDEX IF EXISTS idx_technologies_name;
+DROP INDEX IF EXISTS idx_technologies_name_lower;
 
 DROP INDEX IF EXISTS idx_jobs_search_vector;
 DROP INDEX IF EXISTS idx_jobs_experience_level;
