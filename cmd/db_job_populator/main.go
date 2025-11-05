@@ -55,6 +55,14 @@ type internalJobs struct {
 	Jobs []jobData `json:"jobs"`
 }
 
+// RemovedSignatures represents the structure of the removed_signatures.json file
+type RemovedSignatures struct {
+	RemovedSignatures []string  `json:"removed_signatures"`
+	Count             int       `json:"count"`
+	Timestamp         time.Time `json:"timestamp"`
+	Reason            string    `json:"reason"`
+}
+
 func main() {
 	var err error
 	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
@@ -70,6 +78,7 @@ func main() {
 func run(ctx context.Context) error {
 	// Initialize logger
 	log := logrus.New()
+	log.SetLevel(logrus.DebugLevel)
 	log.SetFormatter(&logrus.TextFormatter{
 		FullTimestamp: true,
 	})
@@ -86,6 +95,12 @@ func run(ctx context.Context) error {
 	inputDir := filepath.Join("data", today)
 	inputFile := filepath.Join(inputDir, "jobs.json")
 	missingTechFile := filepath.Join(inputDir, "missing_technologies.json")
+	removedSignaturesFile := filepath.Join(inputDir, "removed_signatures.json")
+
+	// Process removed signatures first
+	if err := processRemovedSignatures(ctx, removedSignaturesFile, repos, log); err != nil {
+		return err
+	}
 
 	// Read and parse job data
 	jobData, err := readJobData(inputFile, log)
@@ -223,7 +238,7 @@ func processJob(ctx context.Context, j *jobData, repos *repositories, log *logru
 		IsActive:         true,
 		Signature:        j.Signature,
 	}
-	fmt.Print("Processing job: ", jobModel.Title, " at ", j.Company, "\n")
+	log.Infof("Processing job: %s at %s", jobModel.Title, j.Company)
 
 	// Insert or retrieve job
 	if err := createOrRetrieveJob(ctx, jobModel, j, repos.job, log); err != nil {
@@ -357,5 +372,75 @@ func writeMissingTechnologies(missingTechnologies map[string][]string,
 	}
 
 	log.Infof("Missing technologies saved to %s", missingTechFile)
+	return nil
+}
+
+// processRemovedSignatures reads the removed signatures file and deactivates corresponding jobs
+func processRemovedSignatures(ctx context.Context, removedSignaturesFile string, repos *repositories, log *logrus.Logger) error {
+	// Check if the file exists
+	if _, err := os.Stat(removedSignaturesFile); os.IsNotExist(err) {
+		log.Infof("No removed signatures file found at %s, skipping deactivation", removedSignaturesFile)
+		return nil
+	}
+
+	log.Infof("Processing removed signatures from %s", removedSignaturesFile)
+
+	// Read the removed signatures file
+	data, err := os.ReadFile(removedSignaturesFile)
+	if err != nil {
+		log.Errorf("Failed to read removed signatures file: %v", err)
+		return err
+	}
+
+	// Parse the JSON data
+	var removedSigs RemovedSignatures
+	if err := json.Unmarshal(data, &removedSigs); err != nil {
+		log.Errorf("Failed to parse removed signatures JSON: %v", err)
+		return err
+	}
+
+	log.Infof("Found %d signatures to deactivate", len(removedSigs.RemovedSignatures))
+
+	// Process each signature
+	deactivatedCount := 0
+	for _, signature := range removedSigs.RemovedSignatures {
+		if err := deactivateJobBySignature(ctx, signature, repos.job, log); err != nil {
+			log.Warnf("Failed to deactivate job with signature %s: %v", signature, err)
+			continue
+		}
+		deactivatedCount++
+	}
+
+	log.Infof("Successfully deactivated %d jobs out of %d signatures", deactivatedCount, len(removedSigs.RemovedSignatures))
+	return nil
+}
+
+// deactivateJobBySignature finds a job by signature and marks it as inactive
+func deactivateJobBySignature(ctx context.Context, signature string, jobRepo *jobs.Repository, log *logrus.Logger) error {
+	// Find the job by signature
+	job, err := jobRepo.GetBySignature(ctx, signature)
+	if err != nil {
+		if jobs.IsNotFound(err) {
+			log.Debugf("Job with signature %s not found, may have been already removed", signature)
+			return nil // Not an error if job doesn't exist
+		}
+		return fmt.Errorf("failed to find job with signature %s: %w", signature, err)
+	}
+
+	// Check if job is already inactive
+	if !job.IsActive {
+		log.Debugf("Job %s (ID: %d) is already inactive", job.Title, job.ID)
+		return nil
+	}
+
+	// Mark job as inactive
+	job.IsActive = false
+
+	// Update the job in the database
+	if err := jobRepo.Update(ctx, job); err != nil {
+		return fmt.Errorf("failed to update job %s (ID: %d) to inactive: %w", job.Title, job.ID, err)
+	}
+
+	log.Infof("Successfully deactivated job: %s (ID: %d, Signature: %s)", job.Title, job.ID, signature)
 	return nil
 }
