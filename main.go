@@ -47,10 +47,10 @@ func main() {
 // setupRepositories creates all repositories based on Gin mode
 // Returns job repos, company repos, cleanup function, and error
 func setupRepositories(ctx context.Context, cfg *config.Config) (
-	jobs.DataRepository,
-	company.DataRepository,
-	func(),
-	error,
+	jobDataRepo jobs.DataRepository,
+	companyDataRepo company.DataRepository,
+	cleanup func(),
+	err error,
 ) {
 	// Use mock repositories in test mode
 	if cfg.Gin.Mode == gin.TestMode {
@@ -69,16 +69,16 @@ func setupRepositories(ctx context.Context, cfg *config.Config) (
 	// Create all repositories using the shared database pool
 	jobRepo := jobs.NewRepository(dbpool)
 	jobtechRepo := jobtech.NewRepository(dbpool)
-	jobDataRepo := jobs.NewRepositories(jobRepo, jobtechRepo)
+	jobDataRepo = jobs.NewRepositories(jobRepo, jobtechRepo)
 
-	companyRepo := company.NewRepository(dbpool)
+	companyDataRepo = company.NewRepository(dbpool)
 
 	// Return cleanup function that closes the shared pool
-	cleanup := func() {
+	cleanup = func() {
 		dbpool.Close()
 	}
 
-	return jobDataRepo, companyRepo, cleanup, nil
+	return jobDataRepo, companyDataRepo, cleanup, nil
 }
 
 func run(ctx context.Context) int {
