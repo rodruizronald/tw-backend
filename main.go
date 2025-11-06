@@ -17,6 +17,7 @@ import (
 	"github.com/gin-gonic/gin"
 
 	_ "github.com/rodruizronald/ticos-in-tech/docs"
+	"github.com/rodruizronald/ticos-in-tech/internal/company"
 	"github.com/rodruizronald/ticos-in-tech/internal/config"
 	"github.com/rodruizronald/ticos-in-tech/internal/database"
 	"github.com/rodruizronald/ticos-in-tech/internal/devmocks"
@@ -62,6 +63,23 @@ func setupJobRepositories(ctx context.Context, cfg *config.Config) (jobs.DataRep
 	return jobRepos, func() { dbpool.Close() }, nil
 }
 
+// setupCompanyRepositories creates the appropriate company repositories based on Gin mode
+func setupCompanyRepositories(ctx context.Context, cfg *config.Config) (company.DataRepository, func(), error) {
+	if cfg.Gin.Mode == gin.TestMode {
+		return devmocks.NewCompanyRepository(), func() {}, nil
+	}
+
+	// Connect to the database using config
+	dbpool, err := database.Connect(ctx, &cfg.Database)
+	if err != nil {
+		return nil, nil, fmt.Errorf("unable to connect to database: %w", err)
+	}
+
+	companyRepo := company.NewRepository(dbpool)
+
+	return companyRepo, func() { dbpool.Close() }, nil
+}
+
 func run(ctx context.Context) int {
 	// Load configuration
 	cfg, err := config.Load(".env")
@@ -73,15 +91,23 @@ func run(ctx context.Context) int {
 	log := logger.New(&cfg.Logger)
 
 	// Setup job repositories
-	jobRepos, cleanup, err := setupJobRepositories(ctx, cfg)
+	jobRepos, jobCleanup, err := setupJobRepositories(ctx, cfg)
 	if err != nil {
-		log.Errorf("Failed to setup repositories: %v", err)
+		log.Errorf("Failed to setup job repositories: %v", err)
 		return exitWithError
 	}
-	defer cleanup()
+	defer jobCleanup()
+
+	// Setup company repositories
+	companyRepos, companyCleanup, err := setupCompanyRepositories(ctx, cfg)
+	if err != nil {
+		log.Errorf("Failed to setup company repositories: %v", err)
+		return exitWithError
+	}
+	defer companyCleanup()
 
 	// Create router
-	appRouter := router.New(jobRepos, log)
+	appRouter := router.New(jobRepos, companyRepos, log)
 	r := appRouter.Setup(&cfg.Gin)
 
 	// Create and start server
