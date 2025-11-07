@@ -1,5 +1,58 @@
 basePath: /api/v1
 definitions:
+  company.Company:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      is_active:
+        type: boolean
+      jobs:
+        description: Relationships (not stored in database)
+        items:
+          $ref: '#/definitions/jobs.Job'
+        type: array
+      name:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  company.CreateCompanyRequest:
+    properties:
+      is_active:
+        type: boolean
+      name:
+        type: string
+    required:
+    - name
+    type: object
+  company.UpdateCompanyRequest:
+    properties:
+      is_active:
+        type: boolean
+      name:
+        type: string
+    required:
+    - is_active
+    - name
+    type: object
+  httpservice.ErrorDetails:
+    properties:
+      code:
+        type: string
+      details:
+        items:
+          type: string
+        type: array
+      message:
+        type: string
+    type: object
+  httpservice.ErrorResponse:
+    properties:
+      error:
+        $ref: '#/definitions/httpservice.ErrorDetails'
+    type: object
   jobs.ErrorDetails:
     properties:
       code:
@@ -15,6 +68,55 @@ definitions:
     properties:
       error:
         $ref: '#/definitions/jobs.ErrorDetails'
+    type: object
+  jobs.Job:
+    properties:
+      applicationURL:
+        type: string
+      benefits:
+        items:
+          type: string
+        type: array
+      companyID:
+        type: integer
+      createdAt:
+        type: string
+      description:
+        type: string
+      employmentType:
+        type: string
+      experienceLevel:
+        type: string
+      id:
+        type: integer
+      isActive:
+        type: boolean
+      location:
+        type: string
+      mainTechnologies:
+        items:
+          type: string
+        type: array
+      responsibilities:
+        items:
+          type: string
+        type: array
+      signature:
+        type: string
+      skillMustHave:
+        items:
+          type: string
+        type: array
+      skillNiceHave:
+        items:
+          type: string
+        type: array
+      title:
+        type: string
+      updatedAt:
+        type: string
+      workMode:
+        type: string
     type: object
   jobs.JobRequirementsResponse:
     properties:
@@ -110,6 +212,133 @@ info:
   title: Job Board API
   version: "1.0"
 paths:
+  /companies:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve all companies from the database
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/company.Company'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httpservice.ErrorResponse'
+      summary: List all companies
+      tags:
+      - companies
+    post:
+      consumes:
+      - application/json
+      description: Create a new company with the provided name and active status
+      parameters:
+      - description: Company creation request
+        in: body
+        name: company
+        required: true
+        schema:
+          $ref: '#/definitions/company.CreateCompanyRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/company.Company'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httpservice.ErrorResponse'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/httpservice.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httpservice.ErrorResponse'
+      summary: Create a new company
+      tags:
+      - companies
+  /companies/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a company by its ID
+      parameters:
+      - description: Company ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httpservice.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/httpservice.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httpservice.ErrorResponse'
+      summary: Delete a company
+      tags:
+      - companies
+    put:
+      consumes:
+      - application/json
+      description: Update an existing company's name and active status
+      parameters:
+      - description: Company ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Company update request
+        in: body
+        name: company
+        required: true
+        schema:
+          $ref: '#/definitions/company.UpdateCompanyRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/company.Company'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httpservice.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/httpservice.ErrorResponse'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/httpservice.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httpservice.ErrorResponse'
+      summary: Update a company
+      tags:
+      - companies
   /jobs:
     get:
       consumes:
