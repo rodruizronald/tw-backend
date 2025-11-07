@@ -12,6 +12,7 @@ import (
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 
+	"github.com/rodruizronald/ticos-in-tech/internal/company"
 	"github.com/rodruizronald/ticos-in-tech/internal/config"
 	"github.com/rodruizronald/ticos-in-tech/internal/jobs"
 	"github.com/rodruizronald/ticos-in-tech/internal/logger"
@@ -23,15 +24,17 @@ const (
 
 // Router handles HTTP routing and middleware setup
 type Router struct {
-	jobRepos jobs.DataRepository
-	logger   logrus.FieldLogger
+	jobRepo     jobs.DataRepository
+	companyRepo company.DataRepository
+	logger      logrus.FieldLogger
 }
 
 // New creates a new Router instance with dependencies
-func New(jobRepos jobs.DataRepository, log *logrus.Logger) *Router {
+func New(jobRepo jobs.DataRepository, companyRepo company.DataRepository, log *logrus.Logger) *Router {
 	return &Router{
-		jobRepos: jobRepos,
-		logger:   logger.WithComponent(log, componentName),
+		jobRepo:     jobRepo,
+		companyRepo: companyRepo,
+		logger:      logger.WithComponent(log, componentName),
 	}
 }
 
@@ -83,6 +86,10 @@ func (r *Router) setupAPIRoutes(engine *gin.Engine) {
 	v1 := engine.Group("/api/v1")
 
 	// Job routes
-	jobHandler := jobs.NewHandler(r.jobRepos)
+	jobHandler := jobs.NewHandler(r.jobRepo)
 	jobHandler.RegisterRoutes(v1)
+
+	// Company routes
+	companyHandler := company.NewHandler(r.companyRepo)
+	companyHandler.RegisterRoutes(v1)
 }
