@@ -17,6 +17,7 @@ import (
 	"github.com/gin-gonic/gin"
 
 	_ "github.com/rodruizronald/ticos-in-tech/docs"
+	"github.com/rodruizronald/ticos-in-tech/internal/company"
 	"github.com/rodruizronald/ticos-in-tech/internal/config"
 	"github.com/rodruizronald/ticos-in-tech/internal/database"
 	"github.com/rodruizronald/ticos-in-tech/internal/devmocks"
@@ -43,23 +44,41 @@ func main() {
 	os.Exit(code)
 }
 
-// setupJobRepositories creates the appropriate job repositories based on Gin mode
-func setupJobRepositories(ctx context.Context, cfg *config.Config) (jobs.DataRepository, func(), error) {
+// setupRepositories creates all repositories based on Gin mode
+// Returns job repos, company repos, cleanup function, and error
+func setupRepositories(ctx context.Context, cfg *config.Config) (
+	jobDataRepo jobs.DataRepository,
+	companyDataRepo company.DataRepository,
+	cleanup func(),
+	err error,
+) {
+	// Use mock repositories in test mode
 	if cfg.Gin.Mode == gin.TestMode {
-		return devmocks.NewJobRepository(), func() {}, nil
+		return devmocks.NewJobRepository(),
+			devmocks.NewCompanyRepository(),
+			func() {},
+			nil
 	}
 
-	// Connect to the database using config
+	// Connect to the database once and share the pool
 	dbpool, err := database.Connect(ctx, &cfg.Database)
 	if err != nil {
-		return nil, nil, fmt.Errorf("unable to connect to database: %w", err)
+		return nil, nil, nil, fmt.Errorf("unable to connect to database: %w", err)
 	}
 
+	// Create all repositories using the shared database pool
 	jobRepo := jobs.NewRepository(dbpool)
 	jobtechRepo := jobtech.NewRepository(dbpool)
-	jobRepos := jobs.NewRepositories(jobRepo, jobtechRepo)
+	jobDataRepo = jobs.NewRepositories(jobRepo, jobtechRepo)
 
-	return jobRepos, func() { dbpool.Close() }, nil
+	companyDataRepo = company.NewRepository(dbpool)
+
+	// Return cleanup function that closes the shared pool
+	cleanup = func() {
+		dbpool.Close()
+	}
+
+	return jobDataRepo, companyDataRepo, cleanup, nil
 }
 
 func run(ctx context.Context) int {
@@ -72,8 +91,8 @@ func run(ctx context.Context) int {
 
 	log := logger.New(&cfg.Logger)
 
-	// Setup job repositories
-	jobRepos, cleanup, err := setupJobRepositories(ctx, cfg)
+	// Setup all repositories with shared database pool
+	jobRepo, companyRepo, cleanup, err := setupRepositories(ctx, cfg)
 	if err != nil {
 		log.Errorf("Failed to setup repositories: %v", err)
 		return exitWithError
@@ -81,7 +100,7 @@ func run(ctx context.Context) int {
 	defer cleanup()
 
 	// Create router
-	appRouter := router.New(jobRepos, log)
+	appRouter := router.New(jobRepo, companyRepo, log)
 	r := appRouter.Setup(&cfg.Gin)
 
 	// Create and start server
