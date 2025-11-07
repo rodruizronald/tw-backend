@@ -42,7 +42,6 @@ func main() {
 func run(ctx context.Context) error {
 	// Configure logger
 	log := logrus.New()
-	log.SetLevel(logrus.DebugLevel)
 	log.SetFormatter(&logrus.TextFormatter{
 		FullTimestamp: true,
 	})
