@@ -98,8 +98,8 @@ func run(ctx context.Context) error {
 	removedSignaturesFile := filepath.Join(inputDir, "removed_signatures.json")
 
 	// Process removed signatures first
-	if err := processRemovedSignatures(ctx, removedSignaturesFile, repos, log); err != nil {
-		return err
+	if processErr := processRemovedSignatures(ctx, removedSignaturesFile, repos, log); processErr != nil {
+		return processErr
 	}
 
 	// Read and parse job data
@@ -376,7 +376,12 @@ func writeMissingTechnologies(missingTechnologies map[string][]string,
 }
 
 // processRemovedSignatures reads the removed signatures file and deactivates corresponding jobs
-func processRemovedSignatures(ctx context.Context, removedSignaturesFile string, repos *repositories, log *logrus.Logger) error {
+func processRemovedSignatures(
+	ctx context.Context,
+	removedSignaturesFile string,
+	repos *repositories,
+	log *logrus.Logger,
+) error {
 	// Check if the file exists
 	if _, err := os.Stat(removedSignaturesFile); os.IsNotExist(err) {
 		log.Infof("No removed signatures file found at %s, skipping deactivation", removedSignaturesFile)
