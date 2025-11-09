@@ -16,13 +16,13 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/sirupsen/logrus"
 
-	"github.com/rodruizronald/ticos-in-tech/internal/company"
-	"github.com/rodruizronald/ticos-in-tech/internal/config"
-	"github.com/rodruizronald/ticos-in-tech/internal/database"
-	"github.com/rodruizronald/ticos-in-tech/internal/jobs"
-	"github.com/rodruizronald/ticos-in-tech/internal/jobtech"
-	"github.com/rodruizronald/ticos-in-tech/internal/techalias"
-	"github.com/rodruizronald/ticos-in-tech/internal/technology"
+	"github.com/rodruizronald/tw-backend/internal/company"
+	"github.com/rodruizronald/tw-backend/internal/config"
+	"github.com/rodruizronald/tw-backend/internal/database"
+	"github.com/rodruizronald/tw-backend/internal/jobs"
+	"github.com/rodruizronald/tw-backend/internal/jobtech"
+	"github.com/rodruizronald/tw-backend/internal/techalias"
+	"github.com/rodruizronald/tw-backend/internal/technology"
 )
 
 // Job define a type to represent a single job

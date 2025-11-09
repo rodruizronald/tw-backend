@@ -53,6 +53,19 @@ definitions:
       error:
         $ref: '#/definitions/httpservice.ErrorDetails'
     type: object
+  httpservice.HealthResponse:
+    properties:
+      checks:
+        additionalProperties:
+          type: string
+        type: object
+      status:
+        example: healthy
+        type: string
+      timestamp:
+        example: "2024-01-15T10:30:45Z"
+        type: string
+    type: object
   jobs.ErrorDetails:
     properties:
       code:
@@ -339,6 +352,23 @@ paths:
       summary: Update a company
       tags:
       - companies
+  /health:
+    get:
+      description: Returns the health status of the service and its dependencies
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Service is healthy
+          schema:
+            $ref: '#/definitions/httpservice.HealthResponse'
+        "503":
+          description: Service is unhealthy
+          schema:
+            $ref: '#/definitions/httpservice.HealthResponse'
+      summary: Health check endpoint
+      tags:
+      - health
   /jobs:
     get:
       consumes:

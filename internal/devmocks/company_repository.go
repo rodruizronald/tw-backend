@@ -3,7 +3,7 @@ package devmocks
 import (
 	"context"
 
-	"github.com/rodruizronald/ticos-in-tech/internal/company"
+	"github.com/rodruizronald/tw-backend/internal/company"
 )
 
 // CompanyRepository provides mock data for company development and testing

@@ -12,8 +12,8 @@ import (
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 
-	"github.com/rodruizronald/ticos-in-tech/internal/config"
-	"github.com/rodruizronald/ticos-in-tech/internal/logger"
+	"github.com/rodruizronald/tw-backend/internal/config"
+	"github.com/rodruizronald/tw-backend/internal/logger"
 )
 
 const (

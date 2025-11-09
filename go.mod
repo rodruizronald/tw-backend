@@ -1,4 +1,4 @@
-module github.com/rodruizronald/ticos-in-tech
+module github.com/rodruizronald/tw-backend
 
 go 1.24.0
 

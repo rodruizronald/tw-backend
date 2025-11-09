@@ -17,17 +17,17 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/jackc/pgx/v5/pgxpool"
 
-	_ "github.com/rodruizronald/ticos-in-tech/docs"
-	"github.com/rodruizronald/ticos-in-tech/internal/company"
-	"github.com/rodruizronald/ticos-in-tech/internal/config"
-	"github.com/rodruizronald/ticos-in-tech/internal/database"
-	"github.com/rodruizronald/ticos-in-tech/internal/devmocks"
-	"github.com/rodruizronald/ticos-in-tech/internal/httpservice"
-	"github.com/rodruizronald/ticos-in-tech/internal/jobs"
-	"github.com/rodruizronald/ticos-in-tech/internal/jobtech"
-	"github.com/rodruizronald/ticos-in-tech/internal/logger"
-	"github.com/rodruizronald/ticos-in-tech/internal/router"
-	"github.com/rodruizronald/ticos-in-tech/internal/server"
+	_ "github.com/rodruizronald/tw-backend/docs"
+	"github.com/rodruizronald/tw-backend/internal/company"
+	"github.com/rodruizronald/tw-backend/internal/config"
+	"github.com/rodruizronald/tw-backend/internal/database"
+	"github.com/rodruizronald/tw-backend/internal/devmocks"
+	"github.com/rodruizronald/tw-backend/internal/httpservice"
+	"github.com/rodruizronald/tw-backend/internal/jobs"
+	"github.com/rodruizronald/tw-backend/internal/jobtech"
+	"github.com/rodruizronald/tw-backend/internal/logger"
+	"github.com/rodruizronald/tw-backend/internal/router"
+	"github.com/rodruizronald/tw-backend/internal/server"
 )
 
 const (

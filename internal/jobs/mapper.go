@@ -1,6 +1,6 @@
 package jobs
 
-import "github.com/rodruizronald/ticos-in-tech/internal/jobtech"
+import "github.com/rodruizronald/tw-backend/internal/jobtech"
 
 // Mapping functions to convert between database and API models.
 // This file contains transformation logic that bridges the repository layer (database models)

@@ -7,7 +7,7 @@ import (
 
 	"github.com/sirupsen/logrus"
 
-	"github.com/rodruizronald/ticos-in-tech/internal/config"
+	"github.com/rodruizronald/tw-backend/internal/config"
 )
 
 // New creates and configures a new logger instance based on the provided configuration.

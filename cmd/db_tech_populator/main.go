@@ -12,10 +12,10 @@ import (
 
 	"github.com/sirupsen/logrus"
 
-	"github.com/rodruizronald/ticos-in-tech/internal/config"
-	"github.com/rodruizronald/ticos-in-tech/internal/database"
-	"github.com/rodruizronald/ticos-in-tech/internal/techalias"
-	"github.com/rodruizronald/ticos-in-tech/internal/technology"
+	"github.com/rodruizronald/tw-backend/internal/config"
+	"github.com/rodruizronald/tw-backend/internal/database"
+	"github.com/rodruizronald/tw-backend/internal/techalias"
+	"github.com/rodruizronald/tw-backend/internal/technology"
 )
 
 // Technology represents a technology entity as stored in the configuration.

@@ -3,8 +3,8 @@ package technology
 import (
 	"time"
 
-	"github.com/rodruizronald/ticos-in-tech/internal/jobtech"
-	"github.com/rodruizronald/ticos-in-tech/internal/techalias"
+	"github.com/rodruizronald/tw-backend/internal/jobtech"
+	"github.com/rodruizronald/tw-backend/internal/techalias"
 )
 
 // Technology represents a technology skill (programming language, framework, tool, etc.)

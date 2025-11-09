@@ -7,7 +7,7 @@ package jobs
 import (
 	"context"
 
-	"github.com/rodruizronald/ticos-in-tech/internal/jobtech"
+	"github.com/rodruizronald/tw-backend/internal/jobtech"
 	mock "github.com/stretchr/testify/mock"
 )
 
