@@ -1,0 +1,92 @@
+---
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:17-alpine3.22
+    container_name: tw-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
+      POSTGRES_DB: ${DB_NAME:-postgres}
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    networks:
+      - tw-network
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U ${DB_USER:-postgres} -d ${DB_NAME:-postgres}",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  # Migration Service
+  go-migrate:
+    image: migrate/migrate
+    container_name: tw-migrate
+    volumes:
+      - ../migrations:/migrations:ro
+    command:
+      - "-path=/migrations"
+      - "-database=postgres://${DB_USER:-postgres}:${DB_PASSWORD:-postgres}@postgres:${DB_PORT:-5432}/${DB_NAME:-postgres}?sslmode=${DB_SSL_MODE:-disable}"
+      - "up"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - tw-network
+    restart: on-failure
+
+  # Backend application
+  backend:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: tw-backend
+    restart: unless-stopped
+    environment:
+      GIN_MODE: release
+      DB_HOST: postgres
+      DB_PORT: ${DB_PORT:-5432}
+      DB_USER: ${DB_USER:-postgres}
+      DB_PASSWORD: ${DB_PASSWORD:-postgres}
+      DB_NAME: ${DB_NAME:-postgres}
+      DB_SSL_MODE: ${DB_SSL_MODE:-disable}
+    ports:
+      - "8080:8080"
+    networks:
+      - tw-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+      go-migrate:
+        condition: service_completed_successfully
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "wget",
+          "--no-verbose",
+          "--tries=1",
+          "--spider",
+          "http://localhost:8080/health",
+        ]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 40s
+
+networks:
+  tw-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+    driver: local

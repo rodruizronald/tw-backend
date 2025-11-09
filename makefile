@@ -1,4 +1,4 @@
-.PHONY: test lint lint-fix docs help migrate-up migrate-down migrate-status migrate-create migrate-force migrate-drop migrate-goto migrate-up-by migrate-down-by
+.PHONY: test lint lint-fix docs help migrate-up migrate-down migrate-status migrate-create migrate-force migrate-drop migrate-goto migrate-up-by migrate-down-by docker-build docker-up docker-down docker-logs docker-restart docker-clean docker-ps
 
 # Load environment variables from .env file if it exists
 ifneq (,$(wildcard ./.env))
@@ -123,6 +123,47 @@ migrate-down-by:
 	@migrate -path migrations -database "$(DATABASE_URL)" down $(STEPS)
 	@echo "✅ Rolled back $(STEPS) migrations successfully"
 
+# Docker commands
+docker-build:
+	@echo "Building Docker images..."
+	@docker-compose -f docker/docker-compose.yml build
+	@echo "✅ Docker images built successfully"
+
+docker-up:
+	@echo "Starting Docker containers..."
+	@docker-compose -f docker/docker-compose.yml up -d
+	@echo "✅ Docker containers started successfully"
+	@echo "Application available at http://localhost:8080"
+
+docker-down:
+	@echo "Stopping Docker containers..."
+	@docker-compose -f docker/docker-compose.yml down
+	@echo "✅ Docker containers stopped successfully"
+
+docker-logs:
+	@echo "Showing Docker logs (Ctrl+C to exit)..."
+	@docker-compose -f docker/docker-compose.yml logs -f
+
+docker-restart:
+	@echo "Restarting Docker containers..."
+	@docker-compose -f docker/docker-compose.yml restart
+	@echo "✅ Docker containers restarted successfully"
+
+docker-clean:
+	@echo "⚠️  WARNING: This will remove all containers, volumes, and images!"
+	@read -p "Are you sure? [y/N] " -n 1 -r; \
+    echo; \
+    if [ "$$REPLY" = "y" ] || [ "$$REPLY" = "Y" ]; then \
+        docker-compose -f docker/docker-compose.yml down -v --rmi all; \
+        echo "✅ Docker resources cleaned successfully"; \
+    else \
+        echo "❌ Operation cancelled"; \
+    fi
+
+docker-ps:
+	@echo "Docker container status:"
+	@docker-compose -f docker/docker-compose.yml ps
+
 # Show help
 help:
 	@echo "Available commands:"
@@ -144,9 +185,20 @@ help:
 	@echo "  migrate-up-by STEPS=<n>     - Apply N migrations"
 	@echo "  migrate-down-by STEPS=<n>   - Rollback N migrations"
 	@echo ""
+	@echo "Docker:"
+	@echo "  docker-build   - Build Docker images"
+	@echo "  docker-up      - Start Docker containers in detached mode"
+	@echo "  docker-down    - Stop Docker containers"
+	@echo "  docker-logs    - Show Docker container logs"
+	@echo "  docker-restart - Restart Docker containers"
+	@echo "  docker-clean   - Remove all containers, volumes, and images (with confirmation)"
+	@echo "  docker-ps      - Show Docker container status"
+	@echo ""
 	@echo "Examples:"
 	@echo "  make migrate-create NAME=add_user_table"
 	@echo "  make migrate-up-by STEPS=2"
 	@echo "  make migrate-force VERSION=001"
+	@echo "  make docker-up"
+	@echo "  make docker-logs"
 	@echo ""
 	@echo "Note: Database configuration is read from .env file or environment variables"
