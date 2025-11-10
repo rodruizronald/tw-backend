@@ -5,12 +5,10 @@
 
 # Documentation
 README.md
-docs/
 
 # Environment files (will be handled separately)
 .env
 .env.*
-!.env.docker
 
 # IDE and editor files
 .vscode/
