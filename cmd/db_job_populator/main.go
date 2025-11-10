@@ -126,7 +126,7 @@ func run(ctx context.Context) error {
 // setupDatabase initializes the database connection and repositories
 func setupDatabase(ctx context.Context, log *logrus.Logger) (*pgxpool.Pool, *repositories, error) {
 	// Load configuration
-	cfg, err := config.Load("../../.env")
+	cfg, err := config.Load()
 	if err != nil {
 		log.Errorf("failed to load configuration: %v", err)
 		return nil, nil, err

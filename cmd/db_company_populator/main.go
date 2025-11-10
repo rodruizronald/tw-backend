@@ -52,7 +52,7 @@ func run(ctx context.Context) error {
 	log.Infof("Loaded %d companies from JSON file", len(companies))
 
 	// Load configuration
-	cfg, err := config.Load("../../.env")
+	cfg, err := config.Load()
 	if err != nil {
 		log.Errorf("failed to load configuration: %v", err)
 		return err
