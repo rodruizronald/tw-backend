@@ -1,0 +1,70 @@
+# Git files
+.git
+.gitignore
+.github
+
+# Documentation
+README.md
+
+# Environment files (will be handled separately)
+.env
+.env.*
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Build artifacts
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+bin/
+dist/
+build/
+
+# Test files and coverage
+*.test
+*.out
+coverage.txt
+coverage.html
+
+# Dependency directories
+vendor/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Log files
+*.log
+
+# Docker files (no need to copy into image)
+docker-compose*.yml
+Dockerfile*
+.dockerignore
+
+# CI/CD files
+.travis.yml
+.gitlab-ci.yml
+Jenkinsfile
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# Mockery
+.mockery.yml
+
+# Linting
+.golangci.yml
+
+# Make
+makefile
+Makefile

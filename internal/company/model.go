@@ -3,7 +3,7 @@ package company
 import (
 	"time"
 
-	"github.com/rodruizronald/ticos-in-tech/internal/jobs"
+	"github.com/rodruizronald/tw-backend/internal/jobs"
 )
 
 // Company represents a company that posts jobs on the platform.

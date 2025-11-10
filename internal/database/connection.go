@@ -8,7 +8,7 @@ import (
 
 	"github.com/jackc/pgx/v5/pgxpool"
 
-	"github.com/rodruizronald/ticos-in-tech/internal/config"
+	"github.com/rodruizronald/tw-backend/internal/config"
 )
 
 // ConnectionString returns a PostgreSQL connection string based on the configuration.

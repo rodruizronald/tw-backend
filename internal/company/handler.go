@@ -6,7 +6,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"github.com/rodruizronald/ticos-in-tech/internal/httpservice"
+	"github.com/rodruizronald/tw-backend/internal/httpservice"
 )
 
 // Constants for company routes

@@ -8,7 +8,7 @@ import (
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgconn"
 
-	"github.com/rodruizronald/ticos-in-tech/internal/jobs"
+	"github.com/rodruizronald/tw-backend/internal/jobs"
 )
 
 // SQL query constants

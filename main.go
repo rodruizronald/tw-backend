@@ -15,17 +15,19 @@ import (
 	"syscall"
 
 	"github.com/gin-gonic/gin"
+	"github.com/jackc/pgx/v5/pgxpool"
 
-	_ "github.com/rodruizronald/ticos-in-tech/docs"
-	"github.com/rodruizronald/ticos-in-tech/internal/company"
-	"github.com/rodruizronald/ticos-in-tech/internal/config"
-	"github.com/rodruizronald/ticos-in-tech/internal/database"
-	"github.com/rodruizronald/ticos-in-tech/internal/devmocks"
-	"github.com/rodruizronald/ticos-in-tech/internal/jobs"
-	"github.com/rodruizronald/ticos-in-tech/internal/jobtech"
-	"github.com/rodruizronald/ticos-in-tech/internal/logger"
-	"github.com/rodruizronald/ticos-in-tech/internal/router"
-	"github.com/rodruizronald/ticos-in-tech/internal/server"
+	_ "github.com/rodruizronald/tw-backend/docs"
+	"github.com/rodruizronald/tw-backend/internal/company"
+	"github.com/rodruizronald/tw-backend/internal/config"
+	"github.com/rodruizronald/tw-backend/internal/database"
+	"github.com/rodruizronald/tw-backend/internal/devmocks"
+	"github.com/rodruizronald/tw-backend/internal/httpservice"
+	"github.com/rodruizronald/tw-backend/internal/jobs"
+	"github.com/rodruizronald/tw-backend/internal/jobtech"
+	"github.com/rodruizronald/tw-backend/internal/logger"
+	"github.com/rodruizronald/tw-backend/internal/router"
+	"github.com/rodruizronald/tw-backend/internal/server"
 )
 
 const (
@@ -37,70 +39,38 @@ func main() {
 	ctx, stop := signal.NotifyContext(context.Background(),
 		os.Interrupt, syscall.SIGINT, syscall.SIGTERM)
 
-	// Run application
 	code := run(ctx)
 
 	stop()
 	os.Exit(code)
 }
 
-// setupRepositories creates all repositories based on Gin mode
-// Returns job repos, company repos, cleanup function, and error
-func setupRepositories(ctx context.Context, cfg *config.Config) (
-	jobDataRepo jobs.DataRepository,
-	companyDataRepo company.DataRepository,
-	cleanup func(),
-	err error,
-) {
-	// Use mock repositories in test mode
-	if cfg.Gin.Mode == gin.TestMode {
-		return devmocks.NewJobRepository(),
-			devmocks.NewCompanyRepository(),
-			func() {},
-			nil
-	}
-
-	// Connect to the database once and share the pool
-	dbpool, err := database.Connect(ctx, &cfg.Database)
-	if err != nil {
-		return nil, nil, nil, fmt.Errorf("unable to connect to database: %w", err)
-	}
-
-	// Create all repositories using the shared database pool
-	jobRepo := jobs.NewRepository(dbpool)
-	jobtechRepo := jobtech.NewRepository(dbpool)
-	jobDataRepo = jobs.NewRepositories(jobRepo, jobtechRepo)
-
-	companyDataRepo = company.NewRepository(dbpool)
-
-	// Return cleanup function that closes the shared pool
-	cleanup = func() {
-		dbpool.Close()
-	}
-
-	return jobDataRepo, companyDataRepo, cleanup, nil
-}
-
 func run(ctx context.Context) int {
 	// Load configuration
-	cfg, err := config.Load(".env")
+	cfg, err := config.Load()
 	if err != nil {
 		fmt.Printf("failed to load configuration: %v", err)
 		return exitWithError
 	}
-
 	log := logger.New(&cfg.Logger)
 
-	// Setup all repositories with shared database pool
-	jobRepo, companyRepo, cleanup, err := setupRepositories(ctx, cfg)
+	dbpool, err := database.Connect(ctx, &cfg.Database)
 	if err != nil {
-		log.Errorf("Failed to setup repositories: %v", err)
+		log.Errorf("unable to connect to database: %v", err)
 		return exitWithError
 	}
-	defer cleanup()
+	defer dbpool.Close()
 
-	// Create router
-	appRouter := router.New(jobRepo, companyRepo, log)
+	// Setup repositories based on Gin mode
+	jobRepo, companyRepo := setupRepositories(cfg.Gin.Mode, dbpool)
+
+	// Create handlers
+	jobHandler := jobs.NewHandler(jobRepo)
+	companyHandler := company.NewHandler(companyRepo)
+	healthHandler := httpservice.NewHealthHandler(dbpool)
+
+	// Create router with handlers
+	appRouter := router.New(jobHandler, companyHandler, healthHandler, log)
 	r := appRouter.Setup(&cfg.Gin)
 
 	// Create and start server
@@ -111,4 +81,23 @@ func run(ctx context.Context) int {
 	}
 
 	return exitedSuccessfully
+}
+
+// setupRepositories creates all repositories based on Gin mode
+func setupRepositories(mode string, dbpool *pgxpool.Pool) (
+	jobDataRepo jobs.DataRepository,
+	companyDataRepo company.DataRepository,
+) {
+	// Use mock repositories in test mode
+	if mode == gin.TestMode {
+		return devmocks.NewJobRepository(), devmocks.NewCompanyRepository()
+	}
+
+	// Create repositories
+	jobRepo := jobs.NewRepository(dbpool)
+	jobtechRepo := jobtech.NewRepository(dbpool)
+	jobDataRepo = jobs.NewRepositories(jobRepo, jobtechRepo)
+	companyDataRepo = company.NewRepository(dbpool)
+
+	return jobDataRepo, companyDataRepo
 }

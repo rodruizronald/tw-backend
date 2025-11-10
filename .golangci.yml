@@ -65,7 +65,7 @@ formatters:
   settings:
     goimports:
       local-prefixes: # Helps sort local imports
-        - github.com/rodruizronald/ticos-in-tech
+        - github.com/rodruizronald/tw-backend
   exclusions:
     paths:
       - docs

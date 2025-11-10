@@ -3,7 +3,6 @@
 package config
 
 import (
-	"github.com/joho/godotenv"
 	"github.com/kelseyhightower/envconfig"
 )
 
@@ -22,7 +21,7 @@ type ServerConfig struct {
 
 // LoggerConfig holds debug-related configuration
 type LoggerConfig struct {
-	LogLevel string `envconfig:"LOGGER_LOG_LEVEL" default:"debug"` // Options: debug, info, warn, error
+	LogLevel string `envconfig:"LOG_LEVEL" default:"debug"` // Options: debug, info, warn, error
 }
 
 // GinConfig holds Gin-related configuration
@@ -42,14 +41,8 @@ type DatabaseConfig struct {
 
 // Load reads application configuration from environment variables
 // and returns a populated Config struct.
-func Load(filename string) (*Config, error) {
+func Load() (*Config, error) {
 	var cfg Config
-
-	// Load environment variables from .env file
-	if err := godotenv.Load(filename); err != nil {
-		return nil, err
-	}
-
 	err := envconfig.Process("", &cfg)
 	return &cfg, err
 }

@@ -2,7 +2,7 @@ log-level: info
 template: testify
 formatter: goimports
 packages:
-  github.com/rodruizronald/ticos-in-tech/internal/jobs:
+  github.com/rodruizronald/tw-backend/internal/jobs:
     config:
       filename: mocks.go
     interfaces:

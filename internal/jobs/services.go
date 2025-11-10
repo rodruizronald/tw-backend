@@ -3,7 +3,7 @@ package jobs
 import (
 	"context"
 
-	"github.com/rodruizronald/ticos-in-tech/internal/httpservice"
+	"github.com/rodruizronald/tw-backend/internal/httpservice"
 )
 
 // SearchService implements the httpservice.SearchService interface

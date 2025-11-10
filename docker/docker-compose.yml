@@ -1,0 +1,83 @@
+---
+name: tw-backend
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:17-alpine3.22
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME:-postgres}
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    networks:
+      - network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME:-postgres}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  # Migration Service
+  migrate:
+    image: migrate/migrate
+    volumes:
+      - ../migrations:/migrations:ro
+    command:
+      - "-path=/migrations"
+      - "-database=postgres://${DB_USER}:${DB_PASSWORD}@postgres:${DB_PORT:-5432}/${DB_NAME:-postgres}?sslmode=${DB_SSL_MODE:-disable}"
+      - "up"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - network
+    restart: on-failure
+
+  # Backend application
+  server:
+    build:
+      context: ..
+      dockerfile: docker/server.dockerfile
+    restart: unless-stopped
+    environment:
+      # Server configuration details
+      PORT: ${PORT:-8080}
+      GIN_MODE: ${GIN_MODE:-release}
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+
+      # Database connection details
+      DB_HOST: ${DB_HOST:-postgres}
+      DB_PORT: ${DB_PORT:-5432}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME:-postgres}
+      DB_SSL_MODE: ${DB_SSL_MODE:-disable}
+    ports:
+      - "8080:8080"
+    networks:
+      - network
+    depends_on:
+      postgres:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 40s
+
+networks:
+  network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+    driver: local

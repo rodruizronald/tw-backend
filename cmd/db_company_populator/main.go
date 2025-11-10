@@ -12,9 +12,9 @@ import (
 
 	"github.com/sirupsen/logrus"
 
-	"github.com/rodruizronald/ticos-in-tech/internal/company"
-	"github.com/rodruizronald/ticos-in-tech/internal/config"
-	"github.com/rodruizronald/ticos-in-tech/internal/database"
+	"github.com/rodruizronald/tw-backend/internal/company"
+	"github.com/rodruizronald/tw-backend/internal/config"
+	"github.com/rodruizronald/tw-backend/internal/database"
 )
 
 // Company represents a company entity as stored in the JSON configuration file.
@@ -52,7 +52,7 @@ func run(ctx context.Context) error {
 	log.Infof("Loaded %d companies from JSON file", len(companies))
 
 	// Load configuration
-	cfg, err := config.Load("../../.env")
+	cfg, err := config.Load()
 	if err != nil {
 		log.Errorf("failed to load configuration: %v", err)
 		return err

@@ -12,29 +12,39 @@ import (
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 
-	"github.com/rodruizronald/ticos-in-tech/internal/company"
-	"github.com/rodruizronald/ticos-in-tech/internal/config"
-	"github.com/rodruizronald/ticos-in-tech/internal/jobs"
-	"github.com/rodruizronald/ticos-in-tech/internal/logger"
+	"github.com/rodruizronald/tw-backend/internal/config"
+	"github.com/rodruizronald/tw-backend/internal/logger"
 )
 
 const (
 	componentName = "router"
 )
 
-// Router handles HTTP routing and middleware setup
-type Router struct {
-	jobRepo     jobs.DataRepository
-	companyRepo company.DataRepository
-	logger      logrus.FieldLogger
+// HTTPHandler defines the interface for HTTP handlers
+type HTTPHandler interface {
+	RegisterRoutes(rg *gin.RouterGroup)
 }
 
-// New creates a new Router instance with dependencies
-func New(jobRepo jobs.DataRepository, companyRepo company.DataRepository, log *logrus.Logger) *Router {
+// Router handles HTTP routing and middleware setup
+type Router struct {
+	jobHandler     HTTPHandler
+	companyHandler HTTPHandler
+	healthHandler  HTTPHandler
+	logger         logrus.FieldLogger
+}
+
+// New creates a new Router instance with handlers
+func New(
+	jobHandler HTTPHandler,
+	companyHandler HTTPHandler,
+	healthHandler HTTPHandler,
+	log *logrus.Logger,
+) *Router {
 	return &Router{
-		jobRepo:     jobRepo,
-		companyRepo: companyRepo,
-		logger:      logger.WithComponent(log, componentName),
+		jobHandler:     jobHandler,
+		companyHandler: companyHandler,
+		healthHandler:  healthHandler,
+		logger:         logger.WithComponent(log, componentName),
 	}
 }
 
@@ -67,11 +77,21 @@ func (r *Router) setupMiddleware(engine *gin.Engine) {
 
 // setupRoutes configures all application routes
 func (r *Router) setupRoutes(engine *gin.Engine) {
+	// Health check routes at root level (industry standard)
+	r.setupHealthRoutes(engine)
+
 	// Swagger routes
 	r.setupSwaggerRoutes(engine)
 
-	// API routes
+	// API routes (versioned business logic)
 	r.setupAPIRoutes(engine)
+}
+
+// setupHealthRoutes configures health check endpoints at root level
+func (r *Router) setupHealthRoutes(engine *gin.Engine) {
+	// Create a group at root level for health endpoints
+	healthGroup := engine.Group("/health")
+	r.healthHandler.RegisterRoutes(healthGroup)
 }
 
 // setupSwaggerRoutes configures Swagger documentation routes
@@ -85,11 +105,7 @@ func (r *Router) setupSwaggerRoutes(engine *gin.Engine) {
 func (r *Router) setupAPIRoutes(engine *gin.Engine) {
 	v1 := engine.Group("/api/v1")
 
-	// Job routes
-	jobHandler := jobs.NewHandler(r.jobRepo)
-	jobHandler.RegisterRoutes(v1)
-
-	// Company routes
-	companyHandler := company.NewHandler(r.companyRepo)
-	companyHandler.RegisterRoutes(v1)
+	// Register business logic handlers
+	r.jobHandler.RegisterRoutes(v1)
+	r.companyHandler.RegisterRoutes(v1)
 }

@@ -6,7 +6,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/rodruizronald/ticos-in-tech/internal/httpservice"
+	"github.com/rodruizronald/tw-backend/internal/httpservice"
 )
 
 // Constants for job attributes and values

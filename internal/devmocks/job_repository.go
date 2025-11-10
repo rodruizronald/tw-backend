@@ -12,8 +12,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/rodruizronald/ticos-in-tech/internal/jobs"
-	"github.com/rodruizronald/ticos-in-tech/internal/jobtech"
+	"github.com/rodruizronald/tw-backend/internal/jobs"
+	"github.com/rodruizronald/tw-backend/internal/jobtech"
 )
 
 //go:embed data/mock_jobs.json
