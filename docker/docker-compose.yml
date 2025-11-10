@@ -28,7 +28,7 @@ services:
       start_period: 10s
 
   # Migration Service
-  go-migrate:
+  migrate:
     image: migrate/migrate
     volumes:
       - ../migrations:/migrations:ro
@@ -44,10 +44,10 @@ services:
     restart: on-failure
 
   # Backend application
-  go-server:
+  server:
     build:
       context: ..
-      dockerfile: docker/go-server.dockerfile
+      dockerfile: docker/server.dockerfile
     restart: unless-stopped
     environment:
       GIN_MODE: release
@@ -64,7 +64,7 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-      go-migrate:
+      migrate:
         condition: service_completed_successfully
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/health"]

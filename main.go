@@ -47,7 +47,7 @@ func main() {
 
 func run(ctx context.Context) int {
 	// Load configuration
-	cfg, err := config.Load(".env")
+	cfg, err := config.Load()
 	if err != nil {
 		fmt.Printf("failed to load configuration: %v", err)
 		return exitWithError
