@@ -6,8 +6,8 @@ services:
     image: postgres:17-alpine3.22
     restart: unless-stopped
     environment:
-      POSTGRES_USER: ${DB_USER:-postgres}
-      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_NAME:-postgres}
       PGDATA: /var/lib/postgresql/data/pgdata
     volumes:
@@ -17,11 +17,7 @@ services:
     networks:
       - network
     healthcheck:
-      test:
-        [
-          "CMD-SHELL",
-          "pg_isready -U ${DB_USER:-postgres} -d ${DB_NAME:-postgres}",
-        ]
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME:-postgres}"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -34,7 +30,7 @@ services:
       - ../migrations:/migrations:ro
     command:
       - "-path=/migrations"
-      - "-database=postgres://${DB_USER:-postgres}:${DB_PASSWORD:-postgres}@postgres:${DB_PORT:-5432}/${DB_NAME:-postgres}?sslmode=${DB_SSL_MODE:-disable}"
+      - "-database=postgres://${DB_USER}:${DB_PASSWORD}@postgres:${DB_PORT:-5432}/${DB_NAME:-postgres}?sslmode=${DB_SSL_MODE:-disable}"
       - "up"
     depends_on:
       postgres:
@@ -50,11 +46,16 @@ services:
       dockerfile: docker/server.dockerfile
     restart: unless-stopped
     environment:
-      GIN_MODE: release
-      DB_HOST: postgres
+      # Server configuration details
+      PORT: ${PORT:-8080}
+      GIN_MODE: ${GIN_MODE:-release}
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+
+      # Database connection details
+      DB_HOST: ${DB_HOST:-postgres}
       DB_PORT: ${DB_PORT:-5432}
-      DB_USER: ${DB_USER:-postgres}
-      DB_PASSWORD: ${DB_PASSWORD:-postgres}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
       DB_NAME: ${DB_NAME:-postgres}
       DB_SSL_MODE: ${DB_SSL_MODE:-disable}
     ports:
