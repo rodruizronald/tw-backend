@@ -1,4 +1,4 @@
-# Ticos in Tech - Job Board Application
+# Job Board Application
 
 A job board application that connects companies with job seekers, focusing on technology skills. The application provides RESTful APIs for managing job postings, companies, and technology skills with comprehensive documentation.
 
@@ -76,28 +76,28 @@ go get github.com/swaggo/files
 
 **Create PostgreSQL database:**
 ```bash
-createdb ticos_in_tech
+createdb jobs_in_tech
 ```
 
 **Run migrations:**
 ```bash
 # Apply all migrations (migrate up)
-migrate -path migrations -database "postgres://username:password@localhost:5432/ticos_in_tech?sslmode=disable" up
+migrate -path migrations -database "postgres://username:password@localhost:5432/jobs_in_tech?sslmode=disable" up
 
 # Apply specific number of migrations
-migrate -path migrations -database "postgres://username:password@localhost:5432/ticos_in_tech?sslmode=disable" up 2
+migrate -path migrations -database "postgres://username:password@localhost:5432/jobs_in_tech?sslmode=disable" up 2
 
 # Rollback all migrations (migrate down)
-migrate -path migrations -database "postgres://username:password@localhost:5432/ticos_in_tech?sslmode=disable" down
+migrate -path migrations -database "postgres://username:password@localhost:5432/jobs_in_tech?sslmode=disable" down
 
 # Rollback specific number of migrations
-migrate -path migrations -database "postgres://username:password@localhost:5432/ticos_in_tech?sslmode=disable" down 1
+migrate -path migrations -database "postgres://username:password@localhost:5432/jobs_in_tech?sslmode=disable" down 1
 
 # Check current migration version
-migrate -path migrations -database "postgres://username:password@localhost:5432/ticos_in_tech?sslmode=disable" version
+migrate -path migrations -database "postgres://username:password@localhost:5432/jobs_in_tech?sslmode=disable" version
 
 # Force migration to specific version (use with caution)
-migrate -path migrations -database "postgres://username:password@localhost:5432/ticos_in_tech?sslmode=disable" force 001
+migrate -path migrations -database "postgres://username:password@localhost:5432/jobs_in_tech?sslmode=disable" force 001
 ```
 
 *Replace `username` and `password` with your PostgreSQL credentials.*
@@ -118,7 +118,7 @@ This command will:
 
 **Set environment variables:**
 ```bash
-export DATABASE_URL="postgres://username:password@localhost:5432/ticos_in_tech?sslmode=disable"
+export DATABASE_URL="postgres://username:password@localhost:5432/jobs_in_tech?sslmode=disable"
 export PORT=8080
 ```
 
@@ -135,11 +135,11 @@ The application will be available at:
 
 The application uses the following data models:
 
-- **Company**: Represents companies that post jobs
+- **Company**: Represents companies that post 
 - **Job**: Represents job postings with details like title, description, requirements
 - **Technology**: Represents technology skills (programming languages, frameworks, tools)
 - **TechnologyAlias**: Alternative names for technologies (e.g., "JS" for "JavaScript")
-- **JobTechnology**: Association between jobs and required technologies
+- **JobTechnology**: Association between  and required technologies
 
 ## API Documentation
 
@@ -156,9 +156,9 @@ Once the application is running, visit `http://localhost:8080/swagger/index.html
 
 The API provides endpoints for:
 - **Companies**: Create, read, update, and delete company profiles
-- **Jobs**: Manage job postings with full CRUD operations
+- ****: Manage job postings with full CRUD operations
 - **Technologies**: Handle technology skills and their aliases
-- **Job-Technology Relations**: Associate jobs with required technologies
+- **Job-Technology Relations**: Associate  with required technologies
 
 ## Development Workflow
 
